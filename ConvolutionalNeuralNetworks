@@ -1,1 +1,26 @@
+Write an algorithm for Dog Classification
+
+1. Upload an image on the app
+2. If a dog is detected - predict the dog's breed.
+3. If a human is detected - predict the dog breed thats most resembling
+
+Software
+1. Create an app
+
+Hardware
+1. GPU ?
+
+Deeplearning 
+1. Algorithm
+2. Detect a dog in an image
+3. Detect a human in a image
+4. CNN to classify Dog breeds
+5. CNN to classify Dog breeds using Transfer Learning
+
+Testing and Validation
+1. Test Algorithm
+2. Test accuracy of identifying a dog in an image
+3. Test accuracy of identifying a human in an image
+4. Test and validate CNN to classify dog breed
+5. Test and validate CNN to classify dog breed - Transfer Learning
 
