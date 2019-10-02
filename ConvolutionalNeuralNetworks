@@ -50,3 +50,12 @@ def face_detector(img_path, face_cascade):
     return len(faces) > 0
 
 print(face_detector(file,cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_alt.xml')))
+
+
+Detect Dogs
+1. Input Image
+2. Crop Image size to standard size
+3. Convert image to tensor
+4. Capture result of prediction using VGG16 pretrained model that accepts an image tensor
+5. Predict class index
+
