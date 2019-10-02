@@ -24,3 +24,13 @@ Testing and Validation
 4. Test and validate CNN to classify dog breed
 5. Test and validate CNN to classify dog breed - Transfer Learning
 
+Detect human
+1. Extract pre-trained face detector
+2. Load image
+3. Convert image to gray scale
+4. find faces in image
+5. Foreach face in image draw a box
+6. Convert the image back to RGB from gray scale
+7. Display the image with bounding box
+
+
