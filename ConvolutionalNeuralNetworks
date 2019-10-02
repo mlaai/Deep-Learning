@@ -33,4 +33,11 @@ Detect human
 6. Convert the image back to RGB from gray scale
 7. Display the image with bounding box
 
+To detect if an image contains human face
+Function : FaceDetector
+Input : Image location
+Output : Number of faces
+Pretrained Face Detector - CascadeClassifier , Open CV, import cv2
+
+
 
