@@ -3,7 +3,11 @@
     "",
     "\\Code",
     "\\Code\\NeuralNetworks",
+    "\\Code\\NeuralNetworks\\PredictingBikeSharing",
+    "\\Code\\RecurrentNeuralNetworks",
+    "\\Code\\RecurrentNeuralNetworks\\TVScriptGeneration",
     "\\Theory"
   ],
+  "SelectedNode": "\\Code\\RecurrentNeuralNetworks",
   "PreviewInSolutionExplorer": false
 }
