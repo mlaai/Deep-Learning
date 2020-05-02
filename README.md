@@ -1,7 +1,7 @@
 > # Artificial Intelligence
 >> ## Deep Learning
 >>> ### Fundamentals
->>>> ![Image description]https://github.com/mlaai/Deep-Learning/blob/master/Deeplearning-LogisticRegression-NeuralNetwork.png
+>>>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Deeplearning-LogisticRegression-NeuralNetwork.png)
 
 >>> ### Neural Networks
 >>> ### Shallow Neural Networks
