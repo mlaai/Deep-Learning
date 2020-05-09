@@ -52,3 +52,29 @@
 >>> ### Generalized Linear Model - Exponential Families
 >>> ### Cononical Link Function
 >>> ### Hypothesis Test for Logistic regression
+
+> # Probability
+>> ## Probability models and axioms
+>> ## Conditioning - Bayer's Rule
+>> ## Independence
+>> ## Counting
+>> ## Discrete random variables
+>>> ### Probability Mass Function
+>>> ### Variance, Conditioning on an event, Multiple r.v's
+>>> ### Conditioning on a random variable; Independence
+>> ## Continuous random variables
+>>> ### Probability density function
+>>> ### Conditioning on an event; Multiple r.v's
+>>> ### Conditioning on a random variable; Independence
+>> ## Bayesian inference
+>>> ### Linear models with normal noise
+>>> ### Least Mean Square Estimation
+>>> ### Linear Least Mean Square Estimation
+>> ## Limit theorem
+>> ## Classical Statistics
+>> ## Bernoulli process
+>> ## Poisson process
+>> ## Markov chains
+>>> ### Finite State
+>>> ### Steady State behavior
+>>> ### Absorption probabilities and expected time to absorption
