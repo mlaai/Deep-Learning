@@ -20,7 +20,7 @@
 >> ## Inference
 >>> ### Parametric Statistical Models
 >>> ### Parametric Estimation and Confidence Intervals
->>> ### Delta Method and Confidence Internvals
+>>> ### Delta Method and Confidence Intervals
 >>> ### Hypothesis Testing
 >>> ### Type 1 Error
 >>> ### Type 2 Error
