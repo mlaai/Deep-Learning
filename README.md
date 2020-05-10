@@ -55,7 +55,7 @@
 
 > # Probability
 >> ## Probability models and axioms
->>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Probability-Concept-Diagram.bmp)
+>>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Probability-Concept-Diagram.png)
 >> ## Conditioning - Bayer's Rule
 >> ## Independence
 >> ## Counting
