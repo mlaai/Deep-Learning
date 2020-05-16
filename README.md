@@ -15,6 +15,7 @@
 
 > # Statistics
 >> ## Fundamentals
+![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Statistics-Concept-Diagram.png)
 >>> ### Probability Refresher
 >>> ### Probability Redux
 >> ## Inference
