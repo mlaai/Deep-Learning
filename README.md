@@ -1,7 +1,7 @@
 > # Artificial Intelligence
 >> ## Deep Learning
 >>> ### Fundamentals
->>>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Deeplearning-LogisticRegression-NeuralNetwork.png)
+>>>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Images/Deeplearning-LogisticRegression-NeuralNetwork.png)
 
 >>> ### Neural Networks
 >>> ### Shallow Neural Networks
@@ -15,7 +15,7 @@
 
 > # Statistics
 >> ## Fundamentals
-![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Statistics-Concept-Diagram.png)
+![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Images/Statistics-Concept-Diagram.png)
 >>> ### Probability Refresher
 >>> ### Probability Redux
 >> ## Inference
@@ -56,7 +56,7 @@
 
 > # Probability
 >> ## Probability models and axioms
->>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Probability-Concept-Diagram.png)
+>>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Images/Probability-Concept-Diagram.png)
 >> ## Conditioning - Bayer's Rule
 >> ## Independence
 >> ## Counting
