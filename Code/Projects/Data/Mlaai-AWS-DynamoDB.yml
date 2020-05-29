@@ -1,0 +1,57 @@
+Type: AWS::DynamoDB::Table
+Properties: 
+  AttributeDefinitions: 
+    - 
+      AttributeName: "UserId"
+      AttributeType: "S"
+    - 
+      AttributeName: "FirstName"
+      AttributeType: "S"
+    - 
+      AttributeName: "LastName"
+      AttributeType: "S"    
+    - 
+      AttributeName: "Age"
+      AttributeType: "N"
+    - 
+      AttributeName: "DOB"
+      AttributeType: "S"
+    - 
+      AttributeName: "Married"
+      AttributeType: "BOOL"
+    - 
+      AttributeName: "Image"
+      AttributeType: "B"
+    - 
+      AttributeName: "Degrees"
+      AttributeType: "SS"
+    -
+  BillingMode: "PAY_PER_REQUEST"
+  GlobalSecondaryIndexes: 
+    - GlobalSecondaryIndex
+  KeySchema: 
+    - 
+      AttributeName: "UserId"
+      KeyType: "HASH"
+    - 
+      AttributeName: "FirstName"
+      KeyType: "RANGE"
+    - 
+      AttributeName: "LastName"
+      KeyType: "RANGE"
+  LocalSecondaryIndexes: 
+    - LocalSecondaryIndex
+  PointInTimeRecoverySpecification: 
+    PointInTimeRecoverySpecification
+  ProvisionedThroughput: 
+    ReadCapacityUnits: "5"
+    WriteCapacityUnits: "5"
+  SSESpecification: 
+    SSESpecification
+  StreamSpecification: 
+    StreamSpecification
+  TableName: "myTableName"
+  Tags: 
+    - Tag
+  TimeToLiveSpecification: 
+    TimeToLiveSpecification
