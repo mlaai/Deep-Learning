@@ -21,22 +21,24 @@ Parameters:
     Type: Number
     Default: '5'
     MinValue: '5'
-    MaxValue: '10000'
+    MaxValue: '5'
     ConstraintDescription: must be between 5 and 10000
   WriteCapacityUnits:
     Description: Provisioned write throughput
     Type: Number
-    Default: '10'
+    Default: '5'
     MinValue: '5'
-    MaxValue: '10000'
+    MaxValue: '5'
     ConstraintDescription: must be between 5 and 10000
 Resources:
   MlaaiCustomer:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions: 
-      - AttributeName: "CustomerId"
-        AttributeType: "S"
+      - AttributeName: 
+          Ref: HashKeyElementName
+        AttributeType:
+          Ref: HashKeyElementType
       - AttributeName: "FirstName"
         AttributeType: "S"
       - AttributeName: "LastName"
@@ -60,11 +62,24 @@ Resources:
         KeyType: "RANGE"
       - AttributeName: "LastName"
         KeyType: "RANGE"
+      PointInTimeRecoverySpecification: 
+        PointInTimeRecoveryEnabled: true
       ProvisionedThroughput:
         ReadCapacityUnits:
           Ref: ReadCapacityUnits
         WriteCapacityUnits:
           Ref: WriteCapacityUnits
+      StreamSpecification: 
+        StreamViewType: "NEW_AND_OLD_IMAGES"
+      TableName: "Customer"
+      Tags: 
+      - 
+        Key: "Project"
+        Value: "A"
+      TimeToLiveSpecification: 
+      -
+        AttributeName: "CreatedTimestamp"
+        Enabled: true
 Outputs:
   TableName:
     Value:
