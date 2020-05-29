@@ -28,9 +28,6 @@ Properties:
     -
       AttributeName: "CreatedTimestamp"
       AttributeType: "S"
-  BillingMode: "PAY_PER_REQUEST"
-  GlobalSecondaryIndexes: 
-    - GlobalSecondaryIndex
   KeySchema: 
     - 
       AttributeName: "CustomerId"
@@ -41,8 +38,6 @@ Properties:
     - 
       AttributeName: "LastName"
       KeyType: "RANGE"
-  LocalSecondaryIndexes: 
-    - LocalSecondaryIndex
   PointInTimeRecoverySpecification: 
     -
       PointInTimeRecoveryEnabled: true
