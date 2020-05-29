@@ -2,7 +2,7 @@ Type: AWS::DynamoDB::Table
 Properties: 
   AttributeDefinitions: 
     - 
-      AttributeName: "UserId"
+      AttributeName: "CustomerId"
       AttributeType: "S"
     - 
       AttributeName: "FirstName"
@@ -24,14 +24,16 @@ Properties:
       AttributeType: "B"
     - 
       AttributeName: "Degrees"
-      AttributeType: "SS"
+      AttributeType: "S"
     -
+      AttributeName: "CreatedTimestamp"
+      AttributeType: "S"
   BillingMode: "PAY_PER_REQUEST"
   GlobalSecondaryIndexes: 
     - GlobalSecondaryIndex
   KeySchema: 
     - 
-      AttributeName: "UserId"
+      AttributeName: "CustomerId"
       KeyType: "HASH"
     - 
       AttributeName: "FirstName"
@@ -42,16 +44,23 @@ Properties:
   LocalSecondaryIndexes: 
     - LocalSecondaryIndex
   PointInTimeRecoverySpecification: 
-    PointInTimeRecoverySpecification
+    -
+      PointInTimeRecoveryEnabled: true
   ProvisionedThroughput: 
-    ReadCapacityUnits: "5"
-    WriteCapacityUnits: "5"
+    -
+      ReadCapacityUnits: "5"
+      WriteCapacityUnits: "5"
   SSESpecification: 
     SSESpecification
   StreamSpecification: 
-    StreamSpecification
-  TableName: "myTableName"
+    -
+      StreamViewType: "NEW_AND_OLD_IMAGES"
+  TableName: "Customer"
   Tags: 
-    - Tag
+    - 
+      Key: "Project"
+      Value: "A"
   TimeToLiveSpecification: 
-    TimeToLiveSpecification
+    -
+      AttributeName: "CreatedTimestamp"
+      Enabled: true
