@@ -35,33 +35,14 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions: 
-      - AttributeName: 
+      - AttributeName:
           Ref: HashKeyElementName
         AttributeType:
           Ref: HashKeyElementType
-      - AttributeName: "FirstName"
-        AttributeType: "S"
-      - AttributeName: "LastName"
-        AttributeType: "S"    
-      - AttributeName: "Age"
-        AttributeType: "N"
-      - AttributeName: "DOB"
-        AttributeType: "S"
-      - AttributeName: "Married"
-        AttributeType: "BOOL"
-      - AttributeName: "Image"
-        AttributeType: "B"
-      - AttributeName: "Degrees"
-        AttributeType: "S"
-      - AttributeName: "CreatedTimestamp"
-        AttributeType: "S"   
-      KeySchema: 
-      - AttributeName: "CustomerId"
-        KeyType: "HASH"
-      - AttributeName: "FirstName"
-        KeyType: "RANGE"
-      - AttributeName: "LastName"
-        KeyType: "RANGE"
+      KeySchema:
+      - AttributeName:
+          Ref: HashKeyElementName
+        KeyType: HASH
       PointInTimeRecoverySpecification: 
         PointInTimeRecoveryEnabled: true
       ProvisionedThroughput:
@@ -76,10 +57,6 @@ Resources:
       - 
         Key: "Project"
         Value: "A"
-      TimeToLiveSpecification: 
-      -
-        AttributeName: "CreatedTimestamp"
-        Enabled: true
 Outputs:
   TableName:
     Value:
