@@ -22,14 +22,14 @@ Parameters:
     Default: '5'
     MinValue: '5'
     MaxValue: '5'
-    ConstraintDescription: must be between 5 and 10000
+    ConstraintDescription: must be 5
   WriteCapacityUnits:
     Description: Provisioned write throughput
     Type: Number
     Default: '5'
     MinValue: '5'
     MaxValue: '5'
-    ConstraintDescription: must be between 5 and 10000
+    ConstraintDescription: must be 5
 Resources:
   MlaaiCustomer:
     Type: AWS::DynamoDB::Table
@@ -52,7 +52,7 @@ Resources:
           Ref: WriteCapacityUnits
       StreamSpecification: 
         StreamViewType: "NEW_AND_OLD_IMAGES"
-      TableName: "Customer"
+      TableName: "MlaaiCustomer"
       Tags: 
       - 
         Key: "Project"
@@ -61,4 +61,4 @@ Outputs:
   TableName:
     Value:
       Ref: MlaaiCustomer
-    Description: Table name of the newly created DynamoDB table
+    Description: Mlaai Customer Table
