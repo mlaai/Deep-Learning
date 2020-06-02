@@ -37,16 +37,15 @@ Resources:
       AttributeDefinitions: 
       - AttributeName:
           Ref: HashKeyElementName
-        AttributeType:
-          Ref: HashKeyElementType
-      - AttributeName: "FirstName"
         AttributeType: "S"
-      - AttributeName: "LastName"
+      - AttributeName: "FirstName"
         AttributeType: "S"
       KeySchema:
       - AttributeName:
           Ref: HashKeyElementName
-        KeyType: HASH
+        KeyType: "HASH"
+      - AttributeName: "FirstName"
+        KeyType: "RANGE"
       PointInTimeRecoverySpecification: 
         PointInTimeRecoveryEnabled: true
       ProvisionedThroughput:
@@ -57,20 +56,21 @@ Resources:
       StreamSpecification: 
         StreamViewType: "NEW_AND_OLD_IMAGES"
       TableName: "MlaaiCustomer"
-      GlobalSecondaryIndex:
-      - 
-        IndexName: "IdxGS1"
+      GlobalSecondaryIndexes:
+      - IndexName: "IdxGS1"
         KeySchema: 
           - AttributeName:
-            Ref: HashKeyElementName
-            AttributeType:
-            Ref: HashKeyElementType
-          - 
-            AttributeName: "FirstName"
+              Ref: HashKeyElementName
+            KeyType: "HASH"
+          - AttributeName: "FirstName"
             KeyType: "RANGE"
-          - 
-            AttributeName: "LastName"
-            KeyType: "RANGE"
+        Projection: 
+          NonKeyAttributes: 
+            - "FirstName"
+          ProjectionType: "INCLUDE"
+        ProvisionedThroughput: 
+          ReadCapacityUnits: "5"
+          WriteCapacityUnits: "5"
       Tags: 
       - 
         Key: "Project"
