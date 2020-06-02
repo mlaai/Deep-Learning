@@ -22,14 +22,14 @@ Parameters:
     Default: '5'
     MinValue: '5'
     MaxValue: '5'
-    ConstraintDescription: must be between 5 and 10000
+    ConstraintDescription: must be 5
   WriteCapacityUnits:
     Description: Provisioned write throughput
     Type: Number
     Default: '5'
     MinValue: '5'
     MaxValue: '5'
-    ConstraintDescription: must be between 5 and 10000
+    ConstraintDescription: must be 5
 Resources:
   MlaaiCustomer:
     Type: AWS::DynamoDB::Table
@@ -37,12 +37,15 @@ Resources:
       AttributeDefinitions: 
       - AttributeName:
           Ref: HashKeyElementName
-        AttributeType:
-          Ref: HashKeyElementType
+        AttributeType: "S"
+      - AttributeName: "FirstName"
+        AttributeType: "S"
       KeySchema:
       - AttributeName:
           Ref: HashKeyElementName
-        KeyType: HASH
+        KeyType: "HASH"
+      - AttributeName: "FirstName"
+        KeyType: "RANGE"
       PointInTimeRecoverySpecification: 
         PointInTimeRecoveryEnabled: true
       ProvisionedThroughput:
@@ -52,7 +55,22 @@ Resources:
           Ref: WriteCapacityUnits
       StreamSpecification: 
         StreamViewType: "NEW_AND_OLD_IMAGES"
-      TableName: "Customer"
+      TableName: "MlaaiCustomer"
+      GlobalSecondaryIndexes:
+      - IndexName: "IdxGS1"
+        KeySchema: 
+          - AttributeName:
+              Ref: HashKeyElementName
+            KeyType: "HASH"
+          - AttributeName: "FirstName"
+            KeyType: "RANGE"
+        Projection: 
+          NonKeyAttributes: 
+            - "FirstName"
+          ProjectionType: "INCLUDE"
+        ProvisionedThroughput: 
+          ReadCapacityUnits: "5"
+          WriteCapacityUnits: "5"
       Tags: 
       - 
         Key: "Project"
@@ -61,4 +79,4 @@ Outputs:
   TableName:
     Value:
       Ref: MlaaiCustomer
-    Description: Table name of the newly created DynamoDB table
+    Description: Mlaai Customer Table
