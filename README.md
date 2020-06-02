@@ -74,7 +74,7 @@
 >>> ### Linear models with normal noise
 >>> ### Least Mean Square Estimation
 >>> ### Linear Least Mean Square Estimation
->> ## Limit theorem
+>> ## Central Limit theorem
 >> ## Classical Statistics
 >> ## Bernoulli process
 >> ## Poisson process
