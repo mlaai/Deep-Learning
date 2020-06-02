@@ -39,6 +39,10 @@ Resources:
           Ref: HashKeyElementName
         AttributeType:
           Ref: HashKeyElementType
+      - AttributeName: "FirstName"
+        AttributeType: "S"
+      - AttributeName: "LastName"
+        AttributeType: "S"
       KeySchema:
       - AttributeName:
           Ref: HashKeyElementName
@@ -53,6 +57,20 @@ Resources:
       StreamSpecification: 
         StreamViewType: "NEW_AND_OLD_IMAGES"
       TableName: "MlaaiCustomer"
+      GlobalSecondaryIndex:
+      - 
+        IndexName: "IdxGS1"
+        KeySchema: 
+          - AttributeName:
+            Ref: HashKeyElementName
+            AttributeType:
+            Ref: HashKeyElementType
+          - 
+            AttributeName: "FirstName"
+            KeyType: "RANGE"
+          - 
+            AttributeName: "LastName"
+            KeyType: "RANGE"
       Tags: 
       - 
         Key: "Project"
