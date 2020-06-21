@@ -1,4 +1,4 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
+﻿using Microsoft.Azure.Cosmos.Table;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -45,6 +45,7 @@ namespace Mlaai
         {
             return new Mlaai()
             {
+                PartitionKey = mlaai.PartitionKey,
                 RowKey = mlaai.RowKey,
                 Data = mlaai.Data
             };
