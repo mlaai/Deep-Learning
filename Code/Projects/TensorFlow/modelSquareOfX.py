@@ -7,7 +7,7 @@ from tensorflow import keras
 model = tf.keras.Sequential([keras.layers.Dense(units=1, input_shape=[1])])
 
 #compile neural network
-model.compile(optimiser='sgd', loss='mean_squared_error')
+model.compile(optimizer='sgd', loss='mean_squared_error')
 
 #get input data
 xs = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
