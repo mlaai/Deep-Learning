@@ -7,7 +7,7 @@ class trainCallback(tf.keras.callbacks.Callback):
             print("\nReached 99% accuracy so cancelling training!")
             self.model.stop_training = True
 
-def train_mnist():
+def train_fashion_mnist():
     mnist = tf.keras.datasets.fashion_mnist
     (x_train, y_train),(x_test, y_test) = mnist.load_data()
 
@@ -30,4 +30,4 @@ def train_mnist():
 
     return history.epoch, history.history['acc'][-1]
 
-train_mnist()
+train_fashion_mnist()
