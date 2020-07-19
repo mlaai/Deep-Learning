@@ -1,0 +1,22 @@
+{
+    "optimizers": [
+        {
+            "optimizerName": "",
+            "optimizerCode": "sgd"
+        },
+        {
+            "optimizerName": "",
+            "optimizerCode": "adam"
+        }
+    ],
+    "losses": [
+        {
+            "lossName": "",
+            "lossCode": "mean_squared_error"
+        },
+        {
+            "lossName": "",
+            "lossCode": "sparse_categorical_crossentropy"
+        }
+    ]
+}

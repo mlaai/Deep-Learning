@@ -17,4 +17,4 @@ ys = np.array([1.0, 4.0, 9.0, 16.0, 25.0])
 model.fit(xs, ys, epochs=500)
 
 #output result
-print(model.predit([6]))
+print(model.predict([6]))
