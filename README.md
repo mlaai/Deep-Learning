@@ -1,6 +1,11 @@
 [![N|Solid](https://github.com/mlaai/Deep-Learning/blob/master/Images/Mlaai-Logo-Black-1.jpg)](https://mlaai.com)
 
 > # Artificial Intelligence
+
+>> ## Resources
+https://obamawhitehouse.archives.gov/sites/default/files/whitehouse_files/microsites/ostp/NSTC/preparing_for_the_future_of_ai.pdf
+http://www.turingarchive.org/browse.php/B/9
+
 >> ## Deep Learning
 >>> ### Fundamentals
 >>>> ![GitHub Logo](https://github.com/mlaai/Deep-Learning/blob/master/Images/Deeplearning-LogisticRegression-NeuralNetwork.png)
