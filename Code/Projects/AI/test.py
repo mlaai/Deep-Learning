@@ -1,19 +1,19 @@
-import queue as Q
-
-import time
-
-import resource
-
 import sys
 
 import math
 
-#### SKELETON CODE ####
+import timeit
 
-## The Class that Represents the Puzzle
-from collections import deque
+import resource
 
-class State(object):
+from heapq import heappush, heappop, heapify
+
+from collections import deque 
+
+import itertools
+
+class PuzzleState:
+
     def __init__(self, state, parent, move, depth, cost, key):
 
         self.state = state
@@ -36,204 +36,85 @@ class State(object):
 
     def __lt__(self, other):
         return self.map < other.map
+
+goal_node = PuzzleState
+maxFrontierSize = 0
+maxSearchDepth = 0
+
+def move(state, position, puzzleLength, puzzleSide):
+
+    newState = state[:]
+
+    idx = newState.index(0)
+
+    if position == 1:  # Up
+
+        if idx not in range(0, puzzleSide):
+
+            tmp = newState[idx - puzzleSide]
+            newState[idx - puzzleSide] = newState[idx]
+            newState[idx] = tmp
+
+            return newState
+        else:
+            return None
+
+    if position == 2:  # Down
+
+        if idx not in range(puzzleLength - puzzleSide, puzzleLength):
+
+            tmp = newState[idx + puzzleSide]
+            newState[idx + puzzleSide] = newState[idx]
+            newState[idx] = tmp
+
+            return newState
+        else:
+            return None
+
+    if position == 3:  # Left
+
+        if idx not in range(0, puzzleLength, puzzleSide):
+
+            tmp = newState[idx - 1]
+            newState[idx - 1] = newState[idx]
+            newState[idx] = tmp
+
+            return newState
+        else:
+            return None
+
+    if position == 4:  # Right
+
+        if idx not in range(puzzleSide - 1, puzzleLength, puzzleSide):
+
+            tmp = newState[idx + 1]
+            newState[idx + 1] = newState[idx]
+            newState[idx] = tmp
+
+            return newState
+        else:
+            return None
+
+def expand(node, nodesExpanded, puzzleLength, puzzleSide):
+
+    nodesExpanded += 1
+
+    neighbors = list()
+
+    neighbors.append(PuzzleState(move(node.state, 1, puzzleLength, puzzleSide), node, 1, node.depth + 1, node.cost + 1, 0))
+    neighbors.append(PuzzleState(move(node.state, 2, puzzleLength, puzzleSide), node, 2, node.depth + 1, node.cost + 1, 0))
+    neighbors.append(PuzzleState(move(node.state, 3, puzzleLength, puzzleSide), node, 3, node.depth + 1, node.cost + 1, 0))
+    neighbors.append(PuzzleState(move(node.state, 4, puzzleLength, puzzleSide), node, 4, node.depth + 1, node.cost + 1, 0))
+
+    nodes = [neighbor for neighbor in neighbors if neighbor.state]
+
+    return nodes
+
+def BreadthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide):
+
+    global goalNode, maxSearchDepth, maxFrontierSize
     
-goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-goal_node = State
-nodes_expanded = 0
-max_search_depth = 0
-max_frontier_size = 0
-
-class PuzzleState(object):
-
-    """docstring for PuzzleState"""
-
-    def __init__(self, config, n, parent=None, action="Initial", cost=0):
-
-        if n*n != len(config) or n < 2:
-
-            raise Exception("the length of config is not correct!")
-
-        self.n = n
-
-        self.cost = cost
-
-        self.parent = parent
-
-        self.action = action
-
-        self.dimension = n
-
-        self.config = config
-
-        self.children = []
-
-        for i, item in enumerate(self.config):
-
-            if item == 0:
-
-                self.blank_row = i // self.n
-
-                self.blank_col = i % self.n
-
-                break
-
-    def display(self):
-
-        for i in range(self.n):
-
-            line = []
-
-            offset = i * self.n
-
-            for j in range(self.n):
-
-                line.append(self.config[offset + j])
-
-            print(line)
-
-    def move_left(self):
-
-        if self.blank_col == 0:
-
-            return None
-
-        else:
-
-            blank_index = self.blank_row * self.n + self.blank_col
-
-            target = blank_index - 1
-
-            new_config = list(self.config)
-
-            new_config[blank_index], new_config[target] = new_config[target], new_config[blank_index]
-
-            return PuzzleState(tuple(new_config), self.n, parent=self, action="Left", cost=self.cost + 1)
-
-    def move_right(self):
-
-        if self.blank_col == self.n - 1:
-
-            return None
-
-        else:
-
-            blank_index = self.blank_row * self.n + self.blank_col
-
-            target = blank_index + 1
-
-            new_config = list(self.config)
-
-            new_config[blank_index], new_config[target] = new_config[target], new_config[blank_index]
-
-            return PuzzleState(tuple(new_config), self.n, parent=self, action="Right", cost=self.cost + 1)
-
-    def move_up(self):
-
-        if self.blank_row == 0:
-
-            return None
-
-        else:
-
-            blank_index = self.blank_row * self.n + self.blank_col
-
-            target = blank_index - self.n
-
-            new_config = list(self.config)
-
-            new_config[blank_index], new_config[target] = new_config[target], new_config[blank_index]
-
-            return PuzzleState(tuple(new_config), self.n, parent=self, action="Up", cost=self.cost + 1)
-
-    def move_down(self):
-
-        if self.blank_row == self.n - 1:
-
-            return None
-
-        else:
-
-            blank_index = self.blank_row * self.n + self.blank_col
-
-            target = blank_index + self.n
-
-            new_config = list(self.config)
-
-            new_config[blank_index], new_config[target] = new_config[target], new_config[blank_index]
-
-            return PuzzleState(tuple(new_config), self.n, parent=self, action="Down", cost=self.cost + 1)
-
-    def expand(self):
-
-        """expand the node"""
-
-        # add child nodes in order of UDLR
-
-        if len(self.children) == 0:
-
-            up_child = self.move_up()
-
-            if up_child is not None:
-
-                self.children.append(up_child)
-
-            down_child = self.move_down()
-
-            if down_child is not None:
-
-                self.children.append(down_child)
-
-            left_child = self.move_left()
-
-            if left_child is not None:
-
-                self.children.append(left_child)
-
-            right_child = self.move_right()
-
-            if right_child is not None:
-
-                self.children.append(right_child)
-
-        return self.children
- 
-
-class Output(object):
-    def __init__(self, spath_to_goal, cost_of_path, nodes_expanded, search_depth, max_search_depth, running_time, max_ram_usage ):
-        self.spath_to_goal = spath_to_goal
-        self.cost_of_path = cost_of_path
-        self.nodes_expanded = nodes_expanded
-        self.search_depth = search_depth
-        self.max_search_depth = max_search_depth
-        self.running_time = running_time
-        self.max_ram_usage = max_ram_usage
-    
-        
-    def display(self):
-        print('spath_to_goal:', self.spath_to_goal)
-        print('cost_of_path:', self.cost_of_path)
-        print('nodes_expanded:', self.nodes_expanded)
-        print('search_depth:', self.search_depth)
-        print('max_search_depth:', self.max_search_depth)
-        print('running_time:', self.running_time)
-        print('max_ram_usage:', self.max_ram_usage)
-
-        
-# Function that Writes to output.txt
-
-### Students need to change the method to have the corresponding parameters
-
-def writeOutput():
-
-    """writeOutput"""
-    ### Student Code Goes here
-
-def bfs_search(initial_state):
-
-    """BFS search"""
-
-    explored = set()
-    queue =  deque([State(initial_state, None, None, 0, 0, 0)])
+    explored, queue = set(), deque([PuzzleState(initialState, None, None, 0, 0, 0)])
 
     while queue:
 
@@ -241,96 +122,194 @@ def bfs_search(initial_state):
 
         explored.add(node.map)
 
-        if node.state == goal_state:
-            goal_node = node
+        if node.state == goalState:
+            goalNode = node
             return queue
 
-        neighbors = expand(node)
+        neighbors = expand(node, nodesExpanded, puzzleLength, puzzleSide)
 
         for neighbor in neighbors:
             if neighbor.map not in explored:
                 queue.append(neighbor)
                 explored.add(neighbor.map)
 
-                if neighbor.depth > max_search_depth:
-                    max_search_depth += 1
+                if neighbor.depth > maxSearchDepth:
+                    maxSearchDepth += 1
 
-        if len(queue) > max_frontier_size:
-            max_frontier_size = len(queue)
+        if len(queue) > maxFrontierSize:
+            maxFrontierSize = len(queue)
 
-def dfs_search(initial_state):
 
-    """DFS search"""
+def DepthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide):
 
-    ### STUDENT CODE GOES HERE ###
+    global goalNode, maxSearchDepth, maxFrontierSize
+    
+    explored, stack = set(), list([PuzzleState(initialState, None, None, 0, 0, 0)])
 
-def A_star_search(initial_state):
+    while stack:
 
-    """A * search"""
+        node = stack.pop()
 
-    ### STUDENT CODE GOES HERE ###
+        explored.add(node.map)
 
-def calculate_total_cost(state):
+        if node.state == goalState:
+            goalNode = node
+            return stack
 
-    """calculate the total estimated cost of a state"""
+        neighbors = reversed(expand(node, nodesExpanded, puzzleLength, puzzleSide))
 
-    ### STUDENT CODE GOES HERE ###
+        for neighbor in neighbors:
+            if neighbor.map not in explored:
+                stack.append(neighbor)
+                explored.add(neighbor.map)
 
-def calculate_manhattan_dist(idx, value, n):
+                if neighbor.depth > maxSearchDepth:
+                    maxSearchDepth += 1
 
-    """calculate the manhattan distance of a tile"""
+        if len(stack) > maxFrontierSize:
+            maxFrontierSize = len(stack)
 
-    ### STUDENT CODE GOES HERE ###
 
-def test_goal(puzzle_state):
+def h(state, goalState, puzzleLength, puzzleSide):
 
-    """test the state is the goal state or not"""
+    return sum(abs(b % puzzleSide - g % puzzleSide) + abs(b//puzzleSide - g//puzzleSide)
+               for b, g in ((state.index(i), goalState.index(i)) for i in range(1, puzzleLength)))
+    
+def AStarSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide):
 
-    ### STUDENT CODE GOES HERE ###
+    global goalNode, maxSearchDepth, maxFrontierSize
+    
+    explored, heap, heapEntry = set(), list(), {}
 
-# Main Function that reads in Input and Runs corresponding Algorithm
+    key = h(initialState, goalState, puzzleLength, puzzleSide)
 
+    root = PuzzleState(initialState, None, None, 0, 0, key)
+
+    entry = (key, 0, root)
+
+    heappush(heap, entry)
+
+    heapEntry[root.map] = entry
+
+    while heap:
+
+        node = heappop(heap)
+
+        explored.add(node[2].map)
+
+        if node[2].state == goalState:
+            goalNode = node[2]
+            return heap
+
+        neighbors = expand(node[2], nodesExpanded, puzzleLength, puzzleSide)
+
+        for neighbor in neighbors:
+
+            neighbor.key = neighbor.cost + h(neighbor.state, goalState, puzzleLength, puzzleSide)
+
+            entry = (neighbor.key, neighbor.move, neighbor)
+
+            if neighbor.map not in explored:
+
+                heappush(heap, entry)
+
+                explored.add(neighbor.map)
+
+                heapEntry[neighbor.map] = entry
+
+                if neighbor.depth > maxSearchDepth:
+                    maxSearchDepth += 1
+
+            elif neighbor.map in heapEntry and neighbor.key < heapEntry[neighbor.map][2].key:
+
+                hindex = heap.index((heapEntry[neighbor.map][2].key,
+                                     heapEntry[neighbor.map][2].move,
+                                     heapEntry[neighbor.map][2]))
+
+                heap[int(hindex)] = entry
+
+                heapEntry[neighbor.map] = entry
+
+                heapify(heap)
+
+        if len(heap) > maxFrontierSize:
+            maxFrontierSize = len(heap)
+
+def getPathToGoal(initialState):
+    moves = list()
+    currentNode = goalNode
+
+    while initialState != currentNode.state:
+
+        if currentNode.move == 1:
+            movement = 'Up'
+        elif currentNode.move == 2:
+            movement = 'Down'
+        elif currentNode.move == 3:
+            movement = 'Left'
+        else:
+            movement = 'Right'
+        moves.insert(0, movement)
+        currentNode = currentNode.parent
+
+    return moves
+
+
+def exportToFile(fileName, moves, runningTime, nodesExpanded, maxSearchDepth):
+
+    file = open(fileName, 'w')
+    file.write("path_to_goal: " + str(moves))
+    file.write("\ncost_of_path: " + str(len(moves)))
+    file.write("\nnodes_expanded: " + str(nodesExpanded))
+    file.write("\nsearch_depth: " + str(goalNode.depth))
+    file.write("\nmax_search_depth: " + str(maxSearchDepth))
+    file.write("\nrunning_time: " + format(runningTime, '.8f'))
+    file.write("\nmax_ram_usage: " + format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1000.0, '.8f'))    
+    file.close()
+        
 def main():
-
-    sm = sys.argv[1].lower()
-
-    begin_state = sys.argv[2].split(",")
-
-    begin_state = tuple(map(int, begin_state))
-
-    size = int(math.sqrt(len(begin_state)))
-
-    hard_state = PuzzleState(begin_state, size)
     
-    hard_state.display()
+    initialState = list()
+    goalState = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     
-    if sm == "bfs":
+    puzzleLength = 0
+    puzzleSide = 0
+    
+    nodesExpanded = 0
 
-        bfs_search(hard_state)
+    algorithm = sys.argv[1].lower()
+    puzzleBoard = sys.argv[2].split(",")
+    for element in puzzleBoard:
+        initialState.append(int(element))
+    
+    puzzleLength = len(initialState)
 
-    elif sm == "dfs":
+    puzzleSide = int(puzzleLength ** 0.5)
+       
+    start = timeit.default_timer()
+     
+    if algorithm == "bfs":
+        
+        result = BreadthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide)
+        
+    elif algorithm == "dfs":
 
-        dfs_search(hard_state)
+        result = DepthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide)
 
-    elif sm == "ast":
+    elif algorithm == "ast":                                                                             
 
-        A_star_search(hard_state)
+        result = AStarSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide)
 
     else:
 
         print("Enter valid command arguments !")
     
-    spath_to_goal = []
-    cost_of_path = 1
-    nodes_expanded = 2
-    search_depth = 3
-    max_search_depth = 4
-    running_time = 5
-    max_ram_usage = 6
-    
-    output = Output(spath_to_goal, cost_of_path, nodes_expanded, search_depth, max_search_depth, running_time, max_ram_usage)
-    output.display();
-
+    fileName = 'output.txt'
+    stop = timeit.default_timer()
+    runningTime = stop - start
+    moves = getPathToGoal(initialState)
+    exportToFile(fileName, moves, runningTime, nodesExpanded, maxSearchDepth)
+        
 if __name__ == '__main__':
 
     main()
