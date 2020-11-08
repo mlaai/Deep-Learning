@@ -40,7 +40,7 @@ class PuzzleState:
 goal_node = PuzzleState
 maxFrontierSize = 0
 maxSearchDepth = 0
-
+nodesExpanded = 0
 def move(state, position, puzzleLength, puzzleSide):
 
     newState = state[:]
@@ -95,8 +95,10 @@ def move(state, position, puzzleLength, puzzleSide):
         else:
             return None
 
-def expand(node, nodesExpanded, puzzleLength, puzzleSide):
+def expand(node, puzzleLength, puzzleSide):
 
+    global nodesExpanded
+    
     nodesExpanded += 1
 
     neighbors = list()
@@ -110,9 +112,9 @@ def expand(node, nodesExpanded, puzzleLength, puzzleSide):
 
     return nodes
 
-def BreadthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide):
+def BreadthFirstSearch(initialState, goalState, puzzleLength, puzzleSide):
 
-    global goalNode, maxSearchDepth, maxFrontierSize
+    global goalNode, maxSearchDepth, maxFrontierSize, nodesExpanded
     
     explored, queue = set(), deque([PuzzleState(initialState, None, None, 0, 0, 0)])
 
@@ -126,7 +128,7 @@ def BreadthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puz
             goalNode = node
             return queue
 
-        neighbors = expand(node, nodesExpanded, puzzleLength, puzzleSide)
+        neighbors = expand(node, puzzleLength, puzzleSide)
 
         for neighbor in neighbors:
             if neighbor.map not in explored:
@@ -140,9 +142,9 @@ def BreadthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puz
             maxFrontierSize = len(queue)
 
 
-def DepthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide):
+def DepthFirstSearch(initialState, goalState, puzzleLength, puzzleSide):
 
-    global goalNode, maxSearchDepth, maxFrontierSize
+    global goalNode, maxSearchDepth, maxFrontierSize, nodesExpanded
     
     explored, stack = set(), list([PuzzleState(initialState, None, None, 0, 0, 0)])
 
@@ -156,7 +158,7 @@ def DepthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzl
             goalNode = node
             return stack
 
-        neighbors = reversed(expand(node, nodesExpanded, puzzleLength, puzzleSide))
+        neighbors = reversed(expand(node, puzzleLength, puzzleSide))
 
         for neighbor in neighbors:
             if neighbor.map not in explored:
@@ -175,9 +177,9 @@ def h(state, goalState, puzzleLength, puzzleSide):
     return sum(abs(b % puzzleSide - g % puzzleSide) + abs(b//puzzleSide - g//puzzleSide)
                for b, g in ((state.index(i), goalState.index(i)) for i in range(1, puzzleLength)))
     
-def AStarSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide):
+def AStarSearch(initialState, goalState, puzzleLength, puzzleSide):
 
-    global goalNode, maxSearchDepth, maxFrontierSize
+    global goalNode, maxSearchDepth, maxFrontierSize, nodesExpanded
     
     explored, heap, heapEntry = set(), list(), {}
 
@@ -201,7 +203,7 @@ def AStarSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide
             goalNode = node[2]
             return heap
 
-        neighbors = expand(node[2], nodesExpanded, puzzleLength, puzzleSide)
+        neighbors = expand(node[2], puzzleLength, puzzleSide)
 
         for neighbor in neighbors:
 
@@ -255,7 +257,7 @@ def getPathToGoal(initialState):
     return moves
 
 
-def exportToFile(fileName, moves, runningTime, nodesExpanded, maxSearchDepth):
+def exportToFile(fileName, moves, runningTime, maxSearchDepth):
 
     file = open(fileName, 'w')
     file.write("path_to_goal: " + str(moves))
@@ -290,15 +292,15 @@ def main():
      
     if algorithm == "bfs":
         
-        result = BreadthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide)
+        result = BreadthFirstSearch(initialState, goalState, puzzleLength, puzzleSide)
         
     elif algorithm == "dfs":
 
-        result = DepthFirstSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide)
+        result = DepthFirstSearch(initialState, goalState, puzzleLength, puzzleSide)
 
     elif algorithm == "ast":                                                                             
 
-        result = AStarSearch(initialState, goalState, nodesExpanded, puzzleLength, puzzleSide)
+        result = AStarSearch(initialState, goalState, puzzleLength, puzzleSide)
 
     else:
 
@@ -308,7 +310,7 @@ def main():
     stop = timeit.default_timer()
     runningTime = stop - start
     moves = getPathToGoal(initialState)
-    exportToFile(fileName, moves, runningTime, nodesExpanded, maxSearchDepth)
+    exportToFile(fileName, moves, runningTime, maxSearchDepth)
         
 if __name__ == '__main__':
 
